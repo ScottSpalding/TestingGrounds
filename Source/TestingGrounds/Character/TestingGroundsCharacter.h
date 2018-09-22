@@ -33,7 +33,7 @@ public:
 
 	/** First person camera */
 	UFUNCTION(Blueprintcallable, Category = "Weapon")
-	void Fire();
+	void PullTrigger();
 
 private:
 

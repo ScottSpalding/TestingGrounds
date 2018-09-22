@@ -27,10 +27,21 @@ ATestingGroundsCharacter::ATestingGroundsCharacter()
 	Mesh1P->CastShadow = false;
 	Mesh1P->RelativeRotation = FRotator(1.9f, -19.19f, 5.2f);
 	Mesh1P->RelativeLocation = FVector(-0.5f, -4.4f, -155.7f);
+
+	UE_LOG(LogTemp, Warning, TEXT("Here6."));
+	if (InputComponent != NULL) {
+		UE_LOG(LogTemp, Warning, TEXT("Binding component."));
+		InputComponent->BindAction("Fire", IE_Pressed, this, &ATestingGroundsCharacter::PullTrigger);
+	}
+	else {
+		UE_LOG(LogTemp, Warning, TEXT("Found null input component and I am controlled by: %s"), GetController());
+	}
+	UE_LOG(LogTemp, Warning, TEXT("Here7."));
 }
 
-void ATestingGroundsCharacter::Fire()
+void ATestingGroundsCharacter::PullTrigger()
 {
+	UE_LOG(LogTemp, Warning, TEXT("Firing."));
 	Gun->OnFire();
 }
 
@@ -42,10 +53,11 @@ void ATestingGroundsCharacter::BeginPlay()
 		UE_LOG(LogTemp, Warning, TEXT("Gun blueprint missing."));
 		return;
 	}
-	
+	UE_LOG(LogTemp, Warning, TEXT("Here3."));
 	Gun = GetWorld()->SpawnActor<AGun>(GunBlueprint);
 	Gun->AttachToComponent(Mesh1P, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
 	Gun->AnimInstance = Mesh1P->GetAnimInstance();
+	UE_LOG(LogTemp, Warning, TEXT("Here4."));
 }
 
 // Called every frame
@@ -58,7 +70,8 @@ void ATestingGroundsCharacter::Tick(float DeltaTime)
 // Called to bind functionality to input
 void ATestingGroundsCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
+	UE_LOG(LogTemp, Warning, TEXT("Here1."));
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
+	UE_LOG(LogTemp, Warning, TEXT("Here2."));
 }
 
