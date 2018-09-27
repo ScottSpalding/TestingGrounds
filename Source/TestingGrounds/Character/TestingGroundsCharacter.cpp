@@ -47,8 +47,15 @@ void ATestingGroundsCharacter::BeginPlay()
 		return;
 	}
 	Gun = GetWorld()->SpawnActor<AGun>(GunBlueprint);
-	Gun->AttachToComponent(Mesh1P, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
-	Gun->AnimInstance = GetMesh()->GetAnimInstance();
+	if (IsPlayerControlled()) {
+		Gun->AttachToComponent(Mesh1P, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
+	}
+	else {
+		Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint_0"));
+	}
+	
+	Gun->AnimInstance1P = Mesh1P->GetAnimInstance();
+	Gun->AnimInstance3P = GetMesh()->GetAnimInstance();
 }
 
 // Called every frame
@@ -62,6 +69,15 @@ void ATestingGroundsCharacter::Tick(float DeltaTime)
 void ATestingGroundsCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-	InputComponent->BindAction("Fire", IE_Pressed, this, &ATestingGroundsCharacter::PullTrigger);
+	if (InputComponent != nullptr) {
+		InputComponent->BindAction("Fire", IE_Pressed, this, &ATestingGroundsCharacter::PullTrigger);
+	}
 }
 
+void ATestingGroundsCharacter::UnPossessed() {
+	Super::UnPossessed();
+	if (Gun != nullptr)
+	{
+		Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint_0"));
+	}
+}

@@ -27,6 +27,9 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	// Called to do things when UnPossessed
+	virtual void UnPossessed() override;
+
 	/** First person camera */
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 	TSubclassOf<class AGun> GunBlueprint;
