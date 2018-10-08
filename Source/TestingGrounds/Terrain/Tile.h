@@ -17,7 +17,7 @@ public:
 
 	/** First person camera */
 	UFUNCTION(Blueprintcallable, Category = "Terrain")
-	void PlaceActors();
+	void PlaceActors(TSubclassOf<AActor> ToSpawn, int MinSpawn, int MaxSpawn);
 
 protected:
 	// Called when the game starts or when spawned
