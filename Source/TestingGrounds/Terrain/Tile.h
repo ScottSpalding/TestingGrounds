@@ -27,6 +27,6 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	
+	bool CastSphere(FVector Location, float Radius);
 	
 };
