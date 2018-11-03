@@ -84,3 +84,8 @@ bool ATile::CanSpawnAtLocation(FVector Location, float Radius)
 	return !HasHit;
 }
 
+void ATile::SetPool(UActorPool* NewPool)
+{
+	Pool = NewPool;
+}
+

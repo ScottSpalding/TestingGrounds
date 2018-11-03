@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "Tile.generated.h"
 
+class UActorPool;
+
 UCLASS()
 class TESTINGGROUNDS_API ATile : public AActor
 {
@@ -32,4 +34,11 @@ public:
 	void PlaceActor(TSubclassOf<AActor> ToSpawn, FVector SpawnPoint, float Rotation, float Scale);
 
 	bool CanSpawnAtLocation(FVector Location, float Radius);
+
+	UFUNCTION(Blueprintcallable, Category = "Pool")
+	void SetPool(UActorPool* NewPool);
+
+private:
+
+	UActorPool* Pool;
 };
