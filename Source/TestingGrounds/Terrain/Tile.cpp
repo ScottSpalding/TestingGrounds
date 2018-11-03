@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "DrawDebugHelpers.h"
 
+#include "ActorPool.h"
+
 // Sets default values
 ATile::ATile()
 {
@@ -61,6 +63,12 @@ void ATile::BeginPlay()
 	Super::BeginPlay();
 }
 
+void ATile::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	Super::EndPlay(EndPlayReason);
+	Pool->Return(NavMeshBoundsVolume);
+}
+
 // Called every frame
 void ATile::Tick(float DeltaTime)
 {
@@ -87,5 +95,18 @@ bool ATile::CanSpawnAtLocation(FVector Location, float Radius)
 void ATile::SetPool(UActorPool* NewPool)
 {
 	Pool = NewPool;
+
+	PositionNavMeshBoundsVolume();
+}
+
+void ATile::PositionNavMeshBoundsVolume()
+{
+	NavMeshBoundsVolume = Pool->Checkout();
+	if (NavMeshBoundsVolume == nullptr) 
+	{
+		UE_LOG(LogTemp, Error, TEXT("Not enough NavMeshBoundsVolumes in NavMeshBoundsVolume pool."));
+		return;
+	}
+	NavMeshBoundsVolume->SetActorLocation(GetActorLocation());
 }
 
