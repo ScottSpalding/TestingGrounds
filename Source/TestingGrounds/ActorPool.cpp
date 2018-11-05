@@ -44,5 +44,5 @@ void UActorPool::Add(AActor * ActorToAdd)
 		UE_LOG(LogTemp, Warning, TEXT("[%s] Added null actor!"), *GetName());
 		return;
 	}
-	Pool.Add(ActorToAdd);
+	Pool.Push(ActorToAdd);
 }
