@@ -5,6 +5,7 @@
 #include "Engine/World.h"
 #include "GameFramework/Actor.h"
 #include "DrawDebugHelpers.h"
+#include "Runtime/Engine/Classes/AI/Navigation/NavigationSystem.h"
 
 #include "ActorPool.h"
 
@@ -16,6 +17,7 @@ ATile::ATile()
 
 	MinExtent = FVector(0, -2000, 0);
 	MaxExtent = FVector(4000, 2000, 0);
+	NavigationBoundsOffset = FVector(2000,0,0);
 }
 
 void ATile::PlaceActors(TSubclassOf<AActor> ToSpawn, int MinSpawn, int MaxSpawn, float Radius, float MinScale, float MaxScale)
@@ -110,6 +112,8 @@ void ATile::PositionNavMeshBoundsVolume()
 		return;
 	}
 	UE_LOG(LogTemp, Warning, TEXT("%s: Checked out {%s}."), *GetName(), *NavMeshBoundsVolume->GetName());
-	NavMeshBoundsVolume->SetActorLocation(GetActorLocation());
+	NavMeshBoundsVolume->SetActorLocation(GetActorLocation() + NavigationBoundsOffset);
+	UE_LOG(LogTemp, Warning, TEXT("Setting location to {%s} + {%s}."), *GetActorLocation().ToString(), *NavigationBoundsOffset.ToString());
+	GetWorld()->GetNavigationSystem()->Build();
 }
 
